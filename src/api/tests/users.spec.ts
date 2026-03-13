@@ -91,3 +91,74 @@ test('DELETE User', async ({}) => {
   const response = await api.delete(`/api/users/${userId}`);
   expect(response.status()).toBe(204);
 });
+
+
+// A2. Authentication & Negative Testing
+test('POST Register', async ({}) => {
+  const api = await createApiClient();
+  const data = {
+    email: 'george.bluth@reqres.in',
+    password: '123456',
+  };
+
+  const response = await api.post(`/api/register`, { data: data });
+  expect(response.status()).toBe(200);
+
+  const body = await response.json();
+
+  expect(typeof body.id).toBe('number');
+  expect(body.id).toBeGreaterThan(0);
+
+  expect(body.token).toBeDefined();
+  expect(body.token).toMatch(/^[A-Za-z0-9]+$/);
+});
+
+
+test('POST Register without password', async ({}) => {
+  const api = await createApiClient();
+  const errorMessage = 'Missing password';
+  const data = {
+    email: 'george.bluth@reqres.in'
+  };
+
+  const response = await api.post(`/api/register`, { data: data });
+  expect(response.status()).toBe(400);
+
+  const body = await response.json();
+  expect(body).toHaveProperty('error');
+  expect(body.error).toBe(errorMessage);
+
+});
+
+
+test('POST Login', async ({}) => {
+  const api = await createApiClient();
+  const data = {
+    email: 'george.bluth@reqres.in',
+    password: '123456',
+  };
+
+  const response = await api.post(`/api/login`, { data: data });
+  expect(response.status()).toBe(200);
+
+  const body = await response.json();
+
+  expect(body.token).toBeDefined();
+  expect(body.token).toMatch(/^[A-Za-z0-9]+$/);
+});
+
+
+test('POST Login without email', async ({}) => {
+  const api = await createApiClient();
+  const errorMessage = 'Missing email or username';
+  const data = {
+    password: '123456'
+  };
+
+  const response = await api.post(`/api/login`, { data: data });
+  expect(response.status()).toBe(400);
+
+  const body = await response.json();
+  expect(body).toHaveProperty('error');
+  expect(body.error).toBe(errorMessage);
+});
