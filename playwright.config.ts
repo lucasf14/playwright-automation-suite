@@ -12,7 +12,7 @@ dotenv.config({ path: path.resolve(__dirname, '.env') });
  * See https://playwright.dev/docs/test-configuration.
  */
 export default defineConfig({
-  testDir: './src/api/tests',
+  //testDir: './src/api/tests',
   /* Run tests in files in parallel */
   fullyParallel: true,
   /* Fail the build on CI if you accidentally left test.only in the source code. */
@@ -29,6 +29,7 @@ export default defineConfig({
     // baseURL: 'http://localhost:3000',
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
+    headless: false,
     trace: 'on-first-retry',
   },
 
@@ -36,17 +37,25 @@ export default defineConfig({
   projects: [
     {
       name: 'chromium',
+      testDir: './src/ui/tests',
       use: { ...devices['Desktop Chrome'] },
     },
 
     {
       name: 'firefox',
+      testDir: './src/ui/tests',
       use: { ...devices['Desktop Firefox'] },
     },
 
     {
       name: 'webkit',
+      testDir: './src/ui/tests',
       use: { ...devices['Desktop Safari'] },
+    },
+    {
+      name: 'api',
+      testDir: './src/api/tests',
+      use: {},
     },
 
     /* Test against mobile viewports. */
