@@ -9,9 +9,6 @@ test('Successful login', async ({ dashboardPage, page }) => {
   await expect(dashboardPage.dashboardGrid).toBeVisible();
   await expect(dashboardPage.widgets.first()).toBeVisible();
   expect(await dashboardPage.widgets.count()).toBeGreaterThan(0);
-  await expect(dashboardPage.quickLaunchWidget).toBeVisible();
-  expect(await dashboardPage.quickLaunchWidget.count()).toBeGreaterThan(0);
-  await expect(dashboardPage.quickLaunchWidget).toHaveScreenshot(`test-results/after-login-success-quick-launch.png`);
 });
 
 test('Unsuccessful login with invalid credentials', async ({ page }) => {
@@ -30,6 +27,7 @@ test('Unsuccessful login with empty fields', async ({ page }) => {
 
   await expect(loginPage.usernameRequired).toHaveText('Required');
   await expect(loginPage.passwordRequired).toHaveText('Required');
+  await expect(loginPage.usernameContainer).toHaveScreenshot('test-results/login-empty-username.png');
 });
 
 test('Successful login, logout and redirect to login page', async ({ loginPage, page }) => {

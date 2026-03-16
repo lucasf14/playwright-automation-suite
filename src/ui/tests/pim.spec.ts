@@ -1,6 +1,7 @@
 import { test, expect } from '../fixtures/pagesFixture';
 
-test('Navigate to PIM and verify the employee list is displayed', async ({ pimPage, page }) => {
+test('Navigate to PIM and verify the employee list is displayed', async ({ dashboardPage, pimPage, page }) => {
+  await dashboardPage.goToPIM();
   await expect(page).toHaveURL(/pim/);
   await expect(pimPage.employeeTable).toBeVisible();
   await expect(pimPage.employeeRows.first()).toBeVisible();
