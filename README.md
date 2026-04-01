@@ -1,79 +1,91 @@
-# CAG Automation Challenge
+# Playwright Test Automation Suite
 
 ## Project Description
 
-This repository contains automated UI and API tests for the Constellation Automotive Group's **Take-Home Code Challenge**.
-The tests cover key functionalities such as user login, PIM employee management, dashboard validation, and API CRUD operations using Playwright.
+This repository contains an **automated UI and API testing suite** built with **Playwright** and **TypeScript/JavaScript**.
+The project demonstrates best practices in test automation, covering:
+
+- REST API testing (CRUD operations, authentication, schema validation)
+- UI testing (login, employee management, dashboards, navigation)
+- Visual regression testing
+- Reusable utilities and Page Object Model (POM) design
+
+It is intended as a **portfolio-ready demonstration** of a robust test automation framework.
+
+---
 
 ## Project Structure
-```bash
+
+```
 src/
 ├── ui/
-│   ├── pages/             # Page Object Models (Login, Dashboard, PIM)
-│   ├── tests/             # UI tests (login, PIM, sidebar)
+│   ├── pages/        # Page Object classes (Login, Dashboard, PIM)
+│   ├── tests/        # UI test files
+│   └── fixtures/     # Test data files and reusable helpers
 ├── clients/
-│   └── apiClient.ts       # API client creation
+│   └── apiClient.ts  # API client creation
 ├── schemas/
-│   └── user.schema.ts     # JSON schema for API user validation
+│   └── user.schema.ts # JSON schema for API response validation
 ├── tests/
-│   └── api/               # API tests for Users and Authentication
+│   └── api/          # API test files
+└── utils/            # Reusable utilities (e.g., data generator)
 ```
 
+---
+
 ## Setup
-1. Install Dependencies
+
+### 1. Install Dependencies
 ```bash
 npm install
 ```
 
-2. Install Playwright Browsers
-```
+### 2. Install Playwright Browsers
+```bash
 npx playwright install
 ```
 
-3. Copy the example environment file
+### 3. Copy the environment example
 ```bash
 cp .env.example .env
 ```
 
-4. Edit the **.env** file and set your own credentials and URLs
-```bash
-API_BASE_URL=https://reqres.in
-X_API_KEY=<your_api_key>
-UI_BASE_URL=https://opensource-demo.orangehrmlive.com
+### 4. Configure environment variables
+```env
+UI_BASE_URL=<your_ui_url>
 UI_USERNAME=<your_username>
 UI_PASSWORD=<your_password>
+API_BASE_URL=<your_api_url>
+X_API_KEY=<your_api_key>
 ```
 
-## Next Steps
-1. Run all tests
+---
+
+## Running Tests
+
+### Run all tests
 ```bash
 npx playwright test
 ```
 
-2. Run UI Tests on Chromium
+### Run UI tests per browser
 ```bash
 npx playwright test --project=chromium
-```
-
-3. Run UI Tests on Firefox
-```bash
 npx playwright test --project=firefox
-```
-
-4. Run UI Tests on Safari
-```bash
 npx playwright test --project=webkit
 ```
 
-5. Run API Tests
+### Run API tests only
 ```bash
 npx playwright test --project=api
 ```
 
-6. View Test Results
+### View HTML report
 ```bash
 npx playwright show-report
 ```
+
+---
 
 ## Design Decisions
 - **Playwright** was chosen for both UI and API testing to have a single framework covering all suggested scenarios.
@@ -81,5 +93,20 @@ npx playwright show-report
 - **Retry logic** is integrated in tests that interact with dynamic content (on employee search) to reduce flakiness.
 - **toHaveScreenshot** is used selectively on the dashboard's Quick Launch widget, which is the only reliably static element at page load, avoiding flaky tests caused by dynamic widgets (e.g. dashboard's pie charts).
 
+---
+
+## Key Features
+
+- API testing with CRUD, authentication, negative scenarios, and schema validation
+- UI testing including login, employee management, dashboards, and navigation
+- Data-driven tests using utility functions
+- Reusable fixtures for better test organization
+- CI/CD ready (GitHub Actions supported)
+- Environment-based configuration
+
+---
+
 ## Known Issues
-- Employee search in the PIM page can occasionally fail even with retry logic due to timing issues with the table updates.
+
+- Dynamic UI components (e.g., tables or dashboard widgets) may occasionally cause flaky behavior
+- Visual snapshots may differ slightly across operating systems (macOS vs Linux)
